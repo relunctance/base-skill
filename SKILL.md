@@ -203,6 +203,11 @@ fi
 echo "=== 验证安装 ==="
 for skill in "$SKILLS_DIR"/*/; do
   name=$(basename "$skill")
+  # OpenSpec 没有 SKILL.md，是工具集不是 Hermes skill，跳过检查
+  if [ "$name" = "OpenSpec" ]; then
+    echo "⚠️  $name（工具集，无 SKILL.md — 正常）"
+    continue
+  fi
   if [ -f "$skill/SKILL.md" ]; then
     echo "✅ $name"
   else
@@ -210,6 +215,21 @@ for skill in "$SKILLS_DIR"/*/; do
   fi
 done
 echo "共安装 $(ls -d $SKILLS_DIR/*/ 2>/dev/null | wc -l) 个 skills"
+```
+
+### 第七步（Hermes 特有）：验证 external_dirs 生效
+
+```bash
+if [ "$PLATFORM" = "hermes" ]; then
+  CONFIG="$HOME/.hermes/config.yaml"
+  if grep -q "external_dirs:\s*\[\]" "$CONFIG" 2>/dev/null; then
+    echo "❌ external_dirs 为空，skills 不会被加载！"
+    echo "   请修复 $CONFIG 中的 external_dirs 配置"
+    exit 1
+  else
+    echo "✅ external_dirs 配置正确"
+  fi
+fi
 ```
 
 ## 各平台详细安装说明
