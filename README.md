@@ -16,10 +16,10 @@
 ## 功能特性
 
 - **自动平台检测** — 识别 Hermes / OpenClaw / Claude Code / Cursor / VSCode
-- **一键安装** — 同时安装 15 个核心 skills
+- **一键安装** — 同时安装 14 个核心 skills
 - **完整能力闭环** — 覆盖目标→规划→执行→纠错→进化的每个环节
 
-## 安装的 15 个核心 Skills
+## 安装的 14 个核心 Skills
 
 | 维度 | Skills |
 |------|--------|
@@ -28,7 +28,7 @@
 | 执行层 | SkillForge + dir-skill |
 | 质量层 | honesty-skill + capability-evolver + self-improving-agent |
 | 知识层 | summarize-skill |
-| 技能层 | skill-created + find-skills + darwin-skill + git-standards-skill + readme-skill + skill-quality-skill |
+| 技能层 | skill-created + find-skills + darwin-skill + git-standards-skill + readme-skill |
 
 ## 支持的平台
 
@@ -56,7 +56,7 @@
 - [ ] SkillForge — skill 框架
 - [ ] git-standards-skill — Git 规范
 - [ ] readme-skill — README 美化
-- [ ] skill-quality-skill — 提交前质检
+- [ ]  — 提交前质检
 
 ## 相关 Skills
 

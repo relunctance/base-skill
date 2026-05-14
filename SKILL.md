@@ -1,6 +1,6 @@
 ---
 name: base-skill
-description: 当用户要求初始化开发环境、安装所有 skills、让 bot 智能起来时使用。引导 agent 自主识别当前平台，自动安装所有 15 个核心 skills（self-improving-agent / summarize-skill / darwin-skill / capability-evolver-skill / target-skill / honesty-skill / SkillForge / skill-created / find-skills / dir-skill / OpenSpec / task-split-skill / git-standards-skill / readme-skill / skill-quality-skill），覆盖目标→规划→执行→纠错的完整闭环
+description: 当用户要求初始化开发环境、安装所有 skills、让 bot 智能起来时使用。引导 agent 自主识别当前平台，自动安装所有 14 个核心 skills（self-improving-agent / summarize-skill / darwin-skill / capability-evolver-skill / target-skill / honesty-skill / SkillForge / skill-created / find-skills / dir-skill / OpenSpec / task-split-skill / git-standards-skill / readme-skill），覆盖目标→规划→执行→纠错的完整闭环
 version: "1.0.0"
 author: relunctance
 license: MIT
@@ -38,7 +38,7 @@ metadata:
 
 ## 概述
 
-本 skill 引导 agent 识别当前平台，自动安装 15 个核心 skills，覆盖：
+本 skill 引导 agent 识别当前平台，自动安装 14 个核心 skills，覆盖：
 
 | 能力维度 | Skills |
 |---------|--------|
@@ -53,7 +53,7 @@ metadata:
 
 ## 安装目标清单
 
-以下 15 个 skills 按顺序安装：
+以下 14 个 skills 按顺序安装：
 
 ```
 1.  https://github.com/peterskoett/self-improving-agent
@@ -137,7 +137,6 @@ REPOS=(
   "https://github.com/relunctance/task-split-skill"
   "https://github.com/relunctance/git-standards-skill"
   "https://github.com/relunctance/readme-skill"
-  "https://github.com/relunctance/skill-quality-skill"
 )
 
 for repo in "${REPOS[@]}"; do
