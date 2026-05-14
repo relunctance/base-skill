@@ -56,7 +56,16 @@
 - [ ] SkillForge — skill 框架
 - [ ] git-standards-skill — Git 规范
 - [ ] readme-skill — README 美化
-- [ ]  — 提交前质检
+
+## Hermes 特有说明
+
+> ⚠️ **重要**：Hermes 安装 skills 后需验证 `external_dirs` 配置！
+>
+> 如果 `~/.hermes/config.yaml` 中 `external_dirs` 为空数组 `[]`，skills 目录不会被加载。
+> base-skill 安装脚本会自动检测并修复此配置，修复后需重启 gateway：
+> ```bash
+> systemctl --user restart hermes-gateway-<profile>
+> ```
 
 ## 相关 Skills
 

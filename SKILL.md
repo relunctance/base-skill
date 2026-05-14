@@ -73,6 +73,8 @@ metadata:
 
 ## 安装流程
 
+> ⚠️ **Hermes 特有检查**：安装 skills 后必须验证 `external_dirs` 配置！
+
 ### 第一步：检测当前平台
 
 ```bash
@@ -115,6 +117,30 @@ esac
 mkdir -p "$SKILLS_DIR"
 ```
 
+### 第二步（Hermes 特有）：验证 external_dirs 配置
+
+```bash
+# Hermes 必须检查 external_dirs 是否包含 skills 目录
+if [ "$PLATFORM" = "hermes" ]; then
+  CONFIG="$HOME/.hermes/config.yaml"
+  if [ -f "$CONFIG" ]; then
+    # 检查 external_dirs 是否为空或缺失
+    if grep -q "external_dirs:\s*\[\]" "$CONFIG" 2>/dev/null || ! grep -q "external_dirs:" "$CONFIG" 2>/dev/null; then
+      echo "⚠️  external_dirs 为空，正在修复..."
+      # 备份
+      cp "$CONFIG" "$CONFIG.bak"
+      # 修复：添加 external_dirs 指向 ~/.hermes/skills
+      sed -i 's/external_dirs:\s*\[\]/external_dirs:\n    - \/home\/gql\/.hermes\/skills/' "$CONFIG"
+      echo "✅ external_dirs 已修复"
+      # 提示重启
+      echo "🔄 请执行: systemctl --user restart hermes-gateway-<profile> 使配置生效"
+    else
+      echo "✅ external_dirs 配置正确"
+    fi
+  fi
+fi
+```
+
 ### 第三步：克隆安装所有 skills
 
 ```bash
@@ -151,7 +177,7 @@ for repo in "${REPOS[@]}"; do
 done
 ```
 
-### 第四步：OpenClaw 特殊处理
+### 第五步：OpenClaw 特殊处理
 
 OpenClaw 的 gateway 从 `~/.openclaw/extensions/<name>/dist/` 加载，skill 文件需软链或复制到正确位置：
 
@@ -171,7 +197,7 @@ if [ "$PLATFORM" = "openclaw" ]; then
 fi
 ```
 
-### 第五步：验证安装
+### 第六步：验证安装
 
 ```bash
 echo "=== 验证安装 ==="
