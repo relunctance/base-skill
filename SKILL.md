@@ -1,6 +1,6 @@
 ---
 name: base-skill
-description: 当用户要求初始化开发环境、安装所有 skills、让 bot 智能起来时使用。引导 agent 自主识别当前平台，自动安装所有 12 个核心 skills（self-improving-agent / summarize-skill / darwin-skill / capability-evolver-skill / target-skill / honesty-skill / SkillForge / skill-created / find-skills / dir-skill / OpenSpec / task-split-skill），覆盖目标→规划→执行→纠错的完整闭环
+description: 当用户要求初始化开发环境、安装所有 skills、让 bot 智能起来时使用。引导 agent 自主识别当前平台，自动安装所有 13 个核心 skills（self-improving-agent / summarize-skill / darwin-skill / capability-evolver-skill / target-skill / honesty-skill / SkillForge / skill-created / find-skills / dir-skill / OpenSpec / task-split-skill / git-standards-skill），覆盖目标→规划→执行→纠错的完整闭环
 version: "1.0.0"
 author: relunctance
 license: MIT
@@ -38,7 +38,7 @@ metadata:
 
 ## 概述
 
-本 skill 引导 agent 识别当前平台，自动安装 12 个核心 skills，覆盖：
+本 skill 引导 agent 识别当前平台，自动安装 13 个核心 skills，覆盖：
 
 | 能力维度 | Skills |
 |---------|--------|
@@ -53,7 +53,7 @@ metadata:
 
 ## 安装目标清单
 
-以下 12 个 skills 按顺序安装：
+以下 13 个 skills 按顺序安装：
 
 ```
 1.  https://github.com/peterskoett/self-improving-agent
@@ -68,6 +68,7 @@ metadata:
 10. https://github.com/relunctance/dir-skill
 11. https://github.com/Fission-AI/OpenSpec
 12. https://github.com/relunctance/task-split-skill
+13. https://github.com/relunctance/git-standards-skill
 ```
 
 ## 安装流程
@@ -134,6 +135,7 @@ REPOS=(
   "https://github.com/relunctance/dir-skill"
   "https://github.com/Fission-AI/OpenSpec"
   "https://github.com/relunctance/task-split-skill"
+  "https://github.com/relunctance/git-standards-skill"
 )
 
 for repo in "${REPOS[@]}"; do
