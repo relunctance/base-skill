@@ -362,10 +362,14 @@ base-skill 有新版本（{旧commit} → {新commit}），需要更新 SOUL.md
 - SKILL_ROUTE_TABLE：skill 触发词路由映射
 
 🔍 本次解决的问题：
-（读取 base-skill 最近 commit message 获取变更说明）
+（根据 base-skill 本次变更内容，描述具体解决了什么问题）
 
 ✅ 要继续吗？按 y 确认更新：
 ```
+
+**如何填写「本次解决的问题」**：
+- 读取 `git -C ~/repos/base-skill log -1 --format="%s" --stat` 获取变更的文件和描述
+- 描述格式：解决了 XXX 问题 / 新增了 XXX 功能 / 优化了 XXX 流程
 
 ### 操作步骤
 
