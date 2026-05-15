@@ -51,6 +51,30 @@ metadata:
 
 安装完成后，agent 具备：**目标追踪 → 任务拆解 → 规范开发 → 自我纠错 → 持续进化** 的完整闭环。
 
+## 共享模块
+
+`base-skill/scripts/platform_detect.py` 是跨平台路径检测的核心模块，所有 skill 均可复用：
+
+```python
+# 复用方式（在目标 skill 的脚本中）
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "base-skill" / "scripts"))
+from platform_detect import detect, skill_dir, config_dir, state_file
+
+platform = detect()              # 'hermes' | 'openclaw' | 'claude_code' | 'codex' | 'cursor' | 'vscode' | 'unknown'
+skill_dir('target-skill')        # skill 安装目录（平台相关）
+config_dir('my-skill')           # skill 配置目录（平台相关，profile/workspace 隔离）
+state_file('.my-state.json')     # 状态文件路径（profile/workspace 隔离）
+```
+
+| 函数 | 返回 | 说明 |
+|------|------|------|
+| `detect()` | `'hermes'` 等 | 检测当前平台 |
+| `skill_dir(name)` | `Path` | skill 安装目录 |
+| `config_dir(name)` | `Path` | skill 配置目录（存放状态文件） |
+| `state_file(name)` | `Path` | 状态文件路径（自动隔离到 profile/workspace） |
+
 ## 安装目标清单
 
 以下 14 个 skills 按顺序安装：
