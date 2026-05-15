@@ -342,6 +342,29 @@ else
 fi
 ```
 
+## ⚠️ base-skill 升级后必须更新 SOUL.md
+
+当 base-skill 更新后（通过 skill-sync 同步），**必须**执行以下操作更新 SOUL.md：
+
+### 触发条件
+
+```
+skill-sync 报告 base-skill 有更新时
+```
+
+### 操作步骤
+
+告诉 Hermes：
+
+> 请用 `~/repos/base-skill/SKILL.md` 里的 HONESTY_RULES 和 SKILL_ROUTE_TABLE 更新 `~/.hermes/profiles/baijie/SOUL.md`，保留其他章节（Skill 路由表等），只替换「禁止瞎编」相关部分。
+
+### 验证
+
+```bash
+grep "# 禁止瞎编" ~/.hermes/profiles/baijie/SOUL.md   # 应该只有 1 个
+grep "Skill 路由" ~/.hermes/profiles/baijie/SOUL.md  # 应该存在
+```
+
 ## 各平台详细安装说明
 
 ### Hermes Agent
