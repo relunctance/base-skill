@@ -342,42 +342,52 @@ else
 fi
 ```
 
-## ⚠️ base-skill 升级后必须更新 SOUL.md
+### ⚠️ base-skill 升级后必须更新 SOUL.md
 
 当 skill-sync 报告 base-skill 有更新时，**必须**更新 SOUL.md，否则「禁止瞎编」规则和「Skill 路由表」不会同步到最新的版本。
-
-### 本次更新内容预览
-
-**为什么要更新？**
-- `HONESTY_RULES`：新增/修改了「禁止瞎编」的核心准则、自问清单、子 agent 委托约束
-- `SKILL_ROUTE_TABLE`：新增/修改了 skill 触发词的路由映射
 
 ### 触发条件
 
 - skill-sync 输出中看到 `base-skill` 的 `repo` 和 `hermes` commit 不同
 
+### 询问模板（每次更新时直接复制使用）
+
+```
+base-skill 有新版本（{旧commit} → {新commit}），需要更新 SOUL.md
+
+📁 本次更新文件：~/.hermes/profiles/baijie/SOUL.md
+
+📝 本次更新内容：
+- HONESTY_RULES：「禁止瞎编」核心准则、自问清单、子 agent 委托约束
+- SKILL_ROUTE_TABLE：skill 触发词路由映射
+
+🔍 本次解决的问题：
+（读取 base-skill 最近 commit message 获取变更说明）
+
+✅ 要继续吗？按 y 确认更新：
+```
+
 ### 操作步骤
 
-1. **读取** `~/repos/base-skill/SKILL.md` 第 265-330 行，获取 `HONESTY_RULES` 和 `SKILL_ROUTE_TABLE` 的内容
-2. **读取** 当前 `~/.hermes/profiles/baijie/SOUL.md` 完整内容
-3. **替换** SOUL.md 中的「禁止瞎编」section，保留 Skill 路由表、Skill 开发原则等其他章节
-4. **追加** 新的 HONESTY_RULES 到正确位置
-5. **验证** 更新后的 SOUL.md
+1. **读取** `git log -1 --format="%s" ~/repos/base-skill` 获取本次 base-skill 解决的问题
+2. **读取** `sed -n '265,330p' ~/repos/base-skill/SKILL.md` 获取 HONESTY_RULES 和 SKILL_ROUTE_TABLE
+3. **读取** 当前 `~/.hermes/profiles/baijie/SOUL.md` 完整内容
+4. **替换** SOUL.md 中的「禁止瞎编」section，保留 Skill 路由表、Skill 开发原则等其他章节
+5. **验证**
 
 ### 详细操作命令
 
-读取 base-skill 的规则：
 ```bash
+# 获取本次 base-skill 解决的问题
+git -C ~/repos/base-skill log -1 --format="%s"
+
+# 读取 base-skill 的规则
 sed -n '265,330p' ~/repos/base-skill/SKILL.md
-```
 
-读取当前 SOUL.md：
-```bash
+# 读取当前 SOUL.md
 cat ~/.hermes/profiles/baijie/SOUL.md
-```
 
-验证（更新后执行）：
-```bash
+# 验证（更新后执行）
 grep -c "^# 禁止瞎编" ~/.hermes/profiles/baijie/SOUL.md   # 应该输出 1
 grep "Skill 路由" ~/.hermes/profiles/baijie/SOUL.md          # 应该存在
 ```
