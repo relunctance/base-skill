@@ -314,7 +314,9 @@ SKILL_ROUTE_TABLE='
 
 # 写入 SOUL.md（平台相关路径）
 if [ "$PLATFORM" = "hermes" ]; then
-  SOUL_DIR="$HOME/.hermes/profiles/baijie"
+  # Hermes profile 下，$HOME 指向 profile home 目录（如 ~/.hermes/profiles/baijie/home/）
+  # SOUL.md 在 profile 根目录（如 ~/.hermes/profiles/baijie/）
+  SOUL_DIR="$(dirname "$HOME")"
 elif [ "$PLATFORM" = "openclaw" ]; then
   SOUL_DIR="$HOME/.openclaw/workspace"
 else
