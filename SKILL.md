@@ -344,26 +344,43 @@ fi
 
 ## ⚠️ base-skill 升级后必须更新 SOUL.md
 
-当 base-skill 更新后（通过 skill-sync 同步），**必须**执行以下操作更新 SOUL.md：
+当 skill-sync 报告 base-skill 有更新时，**必须**执行以下操作更新 SOUL.md，否则 honesty 规则不会同步。
 
 ### 触发条件
 
-```
-skill-sync 报告 base-skill 有更新时
-```
+- skill-sync 输出中看到 `base-skill` 的 `repo` 和 `hermes` commit 不同
 
 ### 操作步骤
 
-告诉 Hermes：
+1. **读取** `~/repos/base-skill/SKILL.md` 第 265-330 行，获取 `HONESTY_RULES` 和 `SKILL_ROUTE_TABLE` 的内容
+2. **读取** 当前 `~/.hermes/profiles/baijie/SOUL.md` 完整内容
+3. **替换** SOUL.md 中的「禁止瞎编」section（从 `# 禁止瞎编` 到下一个 `# ` 章节之前），保留其他所有章节（Skill 路由表、Skill 开发原则等）
+4. **追加** 新的 HONESTY_RULES 到正确位置
+5. **验证** 更新后的 SOUL.md
 
-> 请用 `~/repos/base-skill/SKILL.md` 里的 HONESTY_RULES 和 SKILL_ROUTE_TABLE 更新 `~/.hermes/profiles/baijie/SOUL.md`，保留其他章节（Skill 路由表等），只替换「禁止瞎编」相关部分。
+### 详细操作命令
 
-### 验证
-
+读取 base-skill 的规则：
 ```bash
-grep "# 禁止瞎编" ~/.hermes/profiles/baijie/SOUL.md   # 应该只有 1 个
-grep "Skill 路由" ~/.hermes/profiles/baijie/SOUL.md  # 应该存在
+sed -n '265,330p' ~/repos/base-skill/SKILL.md
 ```
+
+读取当前 SOUL.md：
+```bash
+cat ~/.hermes/profiles/baijie/SOUL.md
+```
+
+验证（更新后执行）：
+```bash
+grep -c "^# 禁止瞎编" ~/.hermes/profiles/baijie/SOUL.md   # 应该输出 1
+grep "Skill 路由" ~/.hermes/profiles/baijie/SOUL.md          # 应该存在
+```
+
+### ⚠️ 不要做的事
+
+- **不要** 用 regex 或脚本自动更新（容易出错）
+- **不要** 覆盖整个 SOUL.md（会丢失 Skill 路由表等章节）
+- **必须** 保留 Skill 路由表、Skill 开发原则等其他章节
 
 ## 各平台详细安装说明
 
