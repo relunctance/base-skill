@@ -344,7 +344,13 @@ fi
 
 ## ⚠️ base-skill 升级后必须更新 SOUL.md
 
-当 skill-sync 报告 base-skill 有更新时，**必须**执行以下操作更新 SOUL.md，否则 honesty 规则不会同步。
+当 skill-sync 报告 base-skill 有更新时，**必须**更新 SOUL.md，否则「禁止瞎编」规则和「Skill 路由表」不会同步到最新的版本。
+
+### 本次更新内容预览
+
+**为什么要更新？**
+- `HONESTY_RULES`：新增/修改了「禁止瞎编」的核心准则、自问清单、子 agent 委托约束
+- `SKILL_ROUTE_TABLE`：新增/修改了 skill 触发词的路由映射
 
 ### 触发条件
 
@@ -354,7 +360,7 @@ fi
 
 1. **读取** `~/repos/base-skill/SKILL.md` 第 265-330 行，获取 `HONESTY_RULES` 和 `SKILL_ROUTE_TABLE` 的内容
 2. **读取** 当前 `~/.hermes/profiles/baijie/SOUL.md` 完整内容
-3. **替换** SOUL.md 中的「禁止瞎编」section（从 `# 禁止瞎编` 到下一个 `# ` 章节之前），保留其他所有章节（Skill 路由表、Skill 开发原则等）
+3. **替换** SOUL.md 中的「禁止瞎编」section，保留 Skill 路由表、Skill 开发原则等其他章节
 4. **追加** 新的 HONESTY_RULES 到正确位置
 5. **验证** 更新后的 SOUL.md
 
