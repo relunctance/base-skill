@@ -93,6 +93,7 @@ state_file('.my-state.json')     # 状态文件路径（profile/workspace 隔离
 11. https://github.com/Fission-AI/OpenSpec
 12. https://github.com/relunctance/task-split-skill
 13. https://github.com/relunctance/git-standards-skill
+14. https://github.com/relunctance/index-skill
 ```
 
 ## 安装流程
