@@ -307,6 +307,7 @@ SKILL_ROUTE_TABLE='
 | 不知道该用什么 skill | find-skills |
 | 开发原则、避免瞎编 | honesty-skill |
 | 分析日志、诊断错误、健康评分 | capability-evolver-skill |
+| 会话开始、继续、我们做到哪了、当前目标是什么、context、上下文快照 | index-skill |
 
 **执行流程**：收到任务 → 对照路由表 → 决定是否 load skill → 再执行
 '
