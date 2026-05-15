@@ -256,6 +256,88 @@ if [ "$PLATFORM" = "hermes" ]; then
 fi
 ```
 
+### 第八步：写入 honesty 规则 + Skill 路由表到 SOUL.md
+
+安装完 skills 后，将 honesty 规则和 Skill 路由表追加到 SOUL.md（避免重复追加）：
+
+```bash
+HONESTY_RULES='
+# 禁止瞎编（honesty-skill 核心准则）
+
+## 核心准则
+
+- **不知道**：直接说「我不清楚」，绝不捏造角色/组织/工作流/路径/配置
+- **不瞎编**：涉及身份/角色/组织/工作流时，必须先查证，不确定则说不知道
+- **不臆测**：结论必须有依据，无依据不臆测，不打包票
+- **标注前提**：不确定时主动标注前提、风险，不说「绝对/保证/100%」
+- **编造禁止**：禁止编造事实/代码/参数/文档/出处/版本号/路径
+
+## 自问清单（每次回答前）
+
+在开口之前，问自己：
+1. 我真的知道这个吗？
+2. 我有没有查证过？
+3. 如果我不确定，我是否说了「我不清楚，需要先确认」？
+
+## 子 agent 委托约束
+
+委托子 agent 时，必须在 context 中携带：
+```
+[强制约束] 禁止瞎编：不知道就说不知道，涉及未核实的信息必须标注前提。
+```
+'
+
+SKILL_ROUTE_TABLE='
+## Skill 路由（每次任务前必查）
+
+收到用户任务时，先对照这张表，决定是否需要加载对应 skill。
+
+| 用户说/诉求 | 应加载的 skill |
+|------------|--------------|
+| 设定目标、追踪目标、目标跑偏了 | target-skill |
+| 拆解任务、分解步骤 | task-split-skill |
+| 创建新的 skill | skill-created |
+| 检索已有 skill、该用哪个 skill | find-skills |
+| 总结内容、提炼要点 | summarize-skill |
+| 初始化项目结构 | dir-skill |
+| 优化/进化现有 skill | darwin-skill |
+| 检查 README、改进文档 | readme-skill |
+| Git 规范、commit message | git-standards-skill |
+| 不知道该用什么 skill | find-skills |
+| 开发原则、避免瞎编 | honesty-skill |
+| 分析日志、诊断错误、健康评分 | capability-evolver-skill |
+
+**执行流程**：收到任务 → 对照路由表 → 决定是否 load skill → 再执行
+'
+
+# 写入 SOUL.md（平台相关路径）
+if [ "$PLATFORM" = "hermes" ]; then
+  SOUL_DIR="$HOME/.hermes/profiles/baijie"
+elif [ "$PLATFORM" = "openclaw" ]; then
+  SOUL_DIR="$HOME/.openclaw/workspace"
+else
+  SOUL_DIR="$HOME"
+fi
+
+SOUL_FILE="$SOUL_DIR/SOUL.md"
+
+# 检查是否已有 honesty 核心准则节
+if [ -f "$SOUL_FILE" ] && grep -q "禁止瞎编" "$SOUL_FILE"; then
+  echo "⏭️  SOUL.md 已包含 honesty 规则，跳过"
+else
+  echo "$HONESTY_RULES" >> "$SOUL_FILE"
+  echo "✅ honesty 规则已写入 $SOUL_FILE"
+fi
+
+# 检查是否已有 Skill 路由节
+if [ -f "$SOUL_FILE" ] && grep -q "Skill 路由" "$SOUL_FILE"; then
+  echo "⏭️  SOUL.md 已包含 Skill 路由表，跳过"
+else
+  echo "$SKILL_ROUTE_TABLE" >> "$SOUL_FILE"
+  echo "✅ Skill 路由表已写入 $SOUL_FILE"
+fi
+```
+
 ## 各平台详细安装说明
 
 ### Hermes Agent
