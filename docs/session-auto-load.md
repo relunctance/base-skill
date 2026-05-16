@@ -50,13 +50,14 @@ Claude Code 官方文档：Session Hooks
 
 ### 配置方式
 
-```yaml
-agents:
-  defaults:
-    skills:
-      - target-skill
-      - github
-      - weather
+```json
+{
+  "agents": {
+    "defaults": {
+      "skills": ["github", "weather", "your-fixed-skill"]
+    }
+  }
+}
 ```
 
 ### 行为规则
@@ -64,8 +65,12 @@ agents:
 | 场景 | 行为 |
 |------|------|
 | agent 未设置 skills | 继承 `agents.defaults.skills` |
-| agent 设置了 `skills: ["xxx"]` | 替换 defaults（不是合并） |
+| agent 设置了 `skills: ["xxx"]` | 替换 defaults（**不是合并**） |
 | agent 设置了 `skills: []` | 强制禁用所有 skills |
+
+### 安装后操作
+
+base-skill 在 OpenClaw 平台安装时，可自动写入此配置（需用户授权）。
 
 ### 文档参考
 
