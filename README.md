@@ -1,4 +1,7 @@
 # base-skill
+[![version](https://img.shields.io/badge/version-1.0.0-green.svg)]()
+[![category](https://img.shields.io/badge/category-infrastructure-blue.svg)]()
+[![platforms](https://img.shields.io/badge/platforms-claude code%20%7C%20openclaw%20%7C%20hermes%20%7C%20cursor%20%7C%20vscode-blue.svg)]()
 
 > Agent 初始化套件 — 让任何 AI agent 快速具备完整开发能力
 
