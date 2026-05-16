@@ -291,11 +291,24 @@ HONESTY_RULES='
 SKILL_ROUTE_TABLE='
 ## Skill 路由（每次任务前必查）
 
-收到用户任务时，先对照这张表，决定是否需要加载对应 skill。
+### Profile 上下文感知（优先级最高）
+
+收到 skill 相关指令时，**必须先判断当前 profile**：
+
+| 当前 Profile | "skills list" 等指令 | 路由行为 |
+|------------|---------------------|---------|
+| `yutu` | → | **yutu 自身 skill 列表**（`yutu skills list`），不是 Hermes 全局 `Hermes skills list` |
+| `baijie` / 其他 | → | 使用下方路由表 |
+
+> **判断依据**：对话开头的 `Current session context` 或 `Profile` 信息。如果不明确，先问用户。
+>
+> **跨 profile 指令**：当用户说 `yutu skills list`（即使当前在 baijie 对话中），也理解为用户想查 yutu profile 的 skills，按 yutu profile 的规则响应。
+
+### 路由表
 
 | 用户说/诉求 | 应加载的 skill |
 |------------|--------------|
-| 设定目标、追踪目标、目标跑偏了 | target-skill |
+| 设定目标、追踪目标、目标跑偏了、AI跑偏了、保持目标、纠正AI方向、发现更大目标、目标变化了、**你的目标**、**当前目标**、**我的目标是什么**、回顾目标、继续目标、继续追踪目标、回顾下目标、在当前目标下加一个小目标 | target-skill |
 | 拆解任务、分解步骤 | task-split-skill |
 | 创建新的 skill | skill-created |
 | 检索已有 skill、该用哪个 skill | find-skills |
@@ -306,10 +319,32 @@ SKILL_ROUTE_TABLE='
 | Git 规范、commit message | git-standards-skill |
 | 不知道该用什么 skill | find-skills |
 | 开发原则、避免瞎编 | honesty-skill |
+| 当 skill-sync 报告 base-skill 有更新时（说明：HONESTY_RULES 和 SKILL_ROUTE_TABLE 可能已升级） | base-skill |
 | 分析日志、诊断错误、健康评分 | capability-evolver-skill |
 | 会话开始、继续、我们做到哪了、当前目标是什么、context、上下文快照 | index-skill |
 
 **执行流程**：收到任务 → 对照路由表 → 决定是否 load skill → 再执行
+
+### 目标对齐（每次对话首次回复前强制）
+
+无论用户说什么，**每次对话的第一条回复前**必须先运行目标状态检查：
+
+```bash
+python3 ${SKILL_DIR}/target-skill/scripts/target-state.py get
+```
+
+如果输出显示有进行中的目标，**必须**在回复开头先汇报：
+- 🎯 **当前目标**：[目标内容]
+- 📊 **进度**：[进度描述]
+- 🔴 **P0阻塞**：[如有，列出]
+
+如果命令报错或文件不存在，跳过目标汇报，直接回答用户。
+
+> **平台自适应说明**：`${SKILL_DIR}` 由 base-skill 安装时动态设置：
+> - Hermes：`~/.hermes/skills`
+> - OpenClaw：`~/.openclaw/skills`
+> - Claude Code：`~/.claude/skills`
+> - Cursor：`$CURSOR_PROJECT_DIR/.cursor/rules`（项目内）或 `~/.cursor/skills`（全局）
 '
 
 # 写入 SOUL.md（平台相关路径）
@@ -337,7 +372,9 @@ fi
 if [ -f "$SOUL_FILE" ] && grep -q "Skill 路由" "$SOUL_FILE"; then
   echo "⏭️  SOUL.md 已包含 Skill 路由表，跳过"
 else
-  echo "$SKILL_ROUTE_TABLE" >> "$SOUL_FILE"
+  # 写入前将 ${SKILL_DIR} 替换为实际安装目录（平台自适应）
+  SKILL_ROUTE_TABLE_FILLED="$(echo "$SKILL_ROUTE_TABLE" | sed "s|\${SKILL_DIR}|$SKILLS_DIR|g")"
+  echo "$SKILL_ROUTE_TABLE_FILLED" >> "$SOUL_FILE"
   echo "✅ Skill 路由表已写入 $SOUL_FILE"
 fi
 ```
