@@ -291,18 +291,22 @@ HONESTY_RULES='
 SKILL_ROUTE_TABLE='
 ## Skill 路由（每次任务前必查）
 
-### Profile 上下文感知（优先级最高）
+### Profile 上下文感知（仅 Hermes 平台）
 
-收到 skill 相关指令时，**必须先判断当前 profile**：
+> 仅 Hermes 平台有 profile 概念。其他平台（OpenClaw / Claude Code 等）无此机制，跳过本节。
+
+收到 skill 相关指令时，**必须先判断当前是哪个 profile**：
 
 | 当前 Profile | "skills list" 等指令 | 路由行为 |
 |------------|---------------------|---------|
-| `yutu` | → | **yutu 自身 skill 列表**（`yutu skills list`），不是 Hermes 全局 `Hermes skills list` |
-| `baijie` / 其他 | → | 使用下方路由表 |
+| 非当前 profile 的名字 | → | 理解为用户想查**那个 profile** 的 skills，引导执行 `hermes -p <profile> skills list` |
+| 当前 profile | → | 使用下方路由表 |
 
-> **判断依据**：对话开头的 `Current session context` 或 `Profile` 信息。如果不明确，先问用户。
+> **判断依据**：`hermes config get profile.name` 或对话开头的 `Current session context`。
 >
-> **跨 profile 指令**：当用户说 `yutu skills list`（即使当前在 baijie 对话中），也理解为用户想查 yutu profile 的 skills，按 yutu profile 的规则响应。
+> **跨 profile 指令**：当用户说 `yutu skills list`（即使在 baijie 对话中），理解为用户想查 yutu profile 的 skills，引导执行 `yutu skills list`。
+
+**其他平台**：无 profile 机制，跳过上述逻辑，直接使用下方路由表。
 
 ### 路由表
 
