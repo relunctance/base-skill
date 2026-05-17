@@ -168,6 +168,8 @@ fi
 
 ### 第三步：克隆安装所有 skills
 
+> ⚠️ 如果 skill 已存在需要重装，先删除对应目录
+
 ```bash
 SKILLS_DIR="~/.hermes/skills"
 mkdir -p "$SKILLS_DIR"
